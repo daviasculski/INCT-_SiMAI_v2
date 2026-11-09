@@ -11398,7 +11398,7 @@
     "Espírito Santo": {
       "total_buildings": 3342,
       "affected_buildings": 46,
-      "percentage": 63,
+      "percentage": 1,
       "population": 4953,
       "affected_population": 100
     },
@@ -33999,7 +33999,7 @@
     "Lageado": {
       "total_buildings": 3637,
       "affected_buildings": 109,
-      "percentage": 0,
+      "percentage": 3,
       "population": 5676,
       "affected_population": 199
     },
@@ -38773,7 +38773,7 @@
     "Rubem Berta": {
       "total_buildings": 6565,
       "affected_buildings": 268,
-      "percentage": 0,
+      "percentage": 4,
       "population": 27930,
       "affected_population": 1257
     },
@@ -44342,9 +44342,9 @@
     "Centro Histórico": {
       "total_buildings": 4312,
       "affected_buildings": 2077,
-      "percentage": 0,
+      "percentage": 48,
       "population": 30569,
-      "affected_population": 0
+      "affected_population": 14979
     },
     "Chácara das Pedras": {
       "total_buildings": 2804,
@@ -45002,9 +45002,9 @@
     "Centro Histórico": {
       "total_buildings": 4312,
       "affected_buildings": 2103,
-      "percentage": 0,
+      "percentage": 48,
       "population": 30569,
-      "affected_population": 0
+      "affected_population": 14979
     },
     "Chácara das Pedras": {
       "total_buildings": 2804,
