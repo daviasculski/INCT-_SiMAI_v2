@@ -113,8 +113,9 @@ def make_exposure_chart(
     )
     figure.update_layout(
         template="plotly_white",
-        height=350,
-        margin=dict(l=4, r=28, t=12, b=8),
+        separators=",.",
+        height=380,
+        margin=dict(l=4, r=48, t=56, b=8),
         yaxis_title=None,
         showlegend=False,
         font=dict(color=NAVY, family="Arial, sans-serif", size=13),
@@ -134,7 +135,11 @@ def make_exposure_chart(
         ),
         title=dict(
             text=f"10 bairros com maior {selected_metric.lower()}",
-            font=dict(size=16, color=NAVY),
+            font=dict(size=15, color=NAVY),
+            x=0,
+            xanchor="left",
+            y=0.97,
+            yanchor="top",
         ),
     )
     if metric["format"] == "percent":
@@ -188,12 +193,15 @@ def make_evolution_chart(
     figure.add_vline(x=current_level, line_dash="dash", line_color="#e66f62")
     figure.update_layout(
         template="plotly_white",
-        height=350,
-        margin=dict(l=8, r=8, t=12, b=8),
+        separators=",.",
+        height=380,
+        margin=dict(l=8, r=8, t=56, b=8),
         legend=dict(
             orientation="h",
-            y=1.15,
-            x=0,
+            y=-0.22,
+            yanchor="top",
+            x=0.5,
+            xanchor="center",
             font=dict(size=12, color=NAVY),
         ),
         font=dict(color=NAVY, family="Arial, sans-serif", size=13),
@@ -201,7 +209,11 @@ def make_evolution_chart(
         paper_bgcolor="white",
         title=dict(
             text=f"Evolução: {selected_metric.lower()} e bairros atingidos",
-            font=dict(size=16, color=NAVY),
+            font=dict(size=15, color=NAVY),
+            x=0,
+            xanchor="left",
+            y=0.97,
+            yanchor="top",
         ),
     )
     figure.update_xaxes(
@@ -219,13 +231,29 @@ def make_evolution_chart(
         title=dict(text="Bairros", font=dict(size=12, color=NAVY)),
         secondary_y=True,
         showgrid=False,
+        tickformat=".0f",
         tickfont=dict(size=12, color=NAVY),
     )
     return figure
 
 
+def wrap_label(text: str, width: int = 38) -> str:
+    text = text.replace(", )", ")").replace(",)", ")").rstrip(". ")
+    lines, current = [], ""
+    for word in text.split():
+        if current and len(current) + len(word) + 1 > width:
+            lines.append(current)
+            current = word
+        else:
+            current = f"{current} {word}".strip()
+    lines.append(current)
+    return "<br>".join(lines)
+
+
 def make_occurrences_chart(occurrences: pd.DataFrame) -> go.Figure:
-    ordered = occurrences.sort_values("percentage")
+    ordered = occurrences.sort_values("percentage").assign(
+        label=lambda frame: frame["label"].map(wrap_label)
+    )
     figure = px.bar(
         ordered,
         x="percentage",
@@ -243,7 +271,8 @@ def make_occurrences_chart(occurrences: pd.DataFrame) -> go.Figure:
     )
     figure.update_layout(
         template="plotly_white",
-        height=340,
+        separators=",.",
+        height=520,
         margin=dict(l=4, r=30, t=12, b=8),
         yaxis_title=None,
         showlegend=False,
@@ -255,6 +284,7 @@ def make_occurrences_chart(occurrences: pd.DataFrame) -> go.Figure:
             showgrid=True,
             gridcolor="#dce4ee",
             tickfont=dict(size=12, color=NAVY),
+            ticksuffix="%",
             title=dict(text="Domicílios (%)", font=dict(size=12, color=NAVY)),
         ),
         yaxis=dict(
@@ -281,16 +311,25 @@ def make_quality_chart(quality_of_life: pd.DataFrame) -> go.Figure:
         color_discrete_map=colors,
     )
     figure.update_traces(
-        textposition="outside",
-        texttemplate="%{label}<br>%{percent:.1%}",
-        textfont=dict(size=12, color=NAVY),
+        textposition="inside",
+        texttemplate="%{percent:.1%}",
+        insidetextfont=dict(size=13, color="white"),
         hovertemplate="%{label}: %{value:.1f}%<extra></extra>",
     )
     figure.update_layout(
         template="plotly_white",
-        height=340,
+        separators=",.",
+        height=520,
         margin=dict(l=8, r=8, t=12, b=8),
-        showlegend=False,
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            y=-0.08,
+            yanchor="top",
+            x=0.5,
+            xanchor="center",
+            font=dict(size=12, color=NAVY),
+        ),
         font=dict(color=NAVY, family="Arial, sans-serif", size=12),
         plot_bgcolor="white",
         paper_bgcolor="white",
@@ -316,7 +355,7 @@ st.markdown(
     [data-testid="stSidebar"] * { color: #e7eef7; }
     [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
         color: #b4c3d5 !important;
-        font-size: 12px;
+        font-size: 15px;
     }
     [data-testid="stAppViewContainer"] h1,
     [data-testid="stAppViewContainer"] h2,
@@ -371,20 +410,20 @@ st.markdown(
 with st.sidebar:
     st.markdown(
         """
-        <div style="width:40px;height:40px;border-radius:12px;background:#159a9c;
-        display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;">
+        <div style="width:52px;height:52px;border-radius:14px;background:#159a9c;
+        display:flex;align-items:center;justify-content:center;font-weight:700;font-size:21px;">
         ÁG</div>
-        <div style="font-size:14px;font-weight:700;margin-top:12px;letter-spacing:.04em;">
+        <div style="font-size:19px;font-weight:700;margin-top:14px;letter-spacing:.04em;">
         MONITOR</div>
-        <div style="font-size:11px;font-weight:700;letter-spacing:.18em;color:#b4c3d5;">
+        <div style="font-size:14px;font-weight:700;letter-spacing:.18em;color:#b4c3d5;">
         ENCHENTES</div>
-        <div style="margin-top:34px;font-size:11px;font-weight:700;letter-spacing:.16em;
+        <div style="margin-top:38px;font-size:13px;font-weight:700;letter-spacing:.16em;
         color:#b4c3d5;">PAINEL</div>
-        <div style="margin-top:12px;padding:12px;border-radius:8px;background:#21405b;
-        border-left:3px solid #20bdba;font-size:13px;font-weight:600;">
+        <div style="margin-top:12px;padding:14px 16px;border-radius:8px;background:#21405b;
+        border-left:3px solid #20bdba;font-size:16px;font-weight:600;">
         ◉ &nbsp; Contexto externo</div>
-        <div style="position:fixed;bottom:30px;font-size:11px;line-height:1.9;color:#b4c3d5;">
-        <b style="letter-spacing:.15em;">PROJETO</b><br>Projeto Extensionista<br>
+        <div style="position:fixed;bottom:30px;font-size:14px;line-height:1.8;color:#b4c3d5;">
+        <b style="font-size:13px;letter-spacing:.15em;">PROJETO</b><br>Projeto Extensionista<br>
         Fase 2 · Porto Alegre</div>
         """,
         unsafe_allow_html=True,
@@ -400,17 +439,19 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-heading, source = st.columns([4, 1])
+heading, source = st.columns([3, 1])
 with heading:
     st.title("Análise Contextual e Externa")
     st.caption("Enchentes de maio de 2024 · Região de Porto Alegre")
 with source:
     st.markdown(
-        "<div style='text-align:right;padding-top:20px;font-size:12px;color:#586b82;'>"
+        "<div style='text-align:right;padding-top:20px;font-size:12px;color:#586b82;white-space:nowrap;'>"
         "<span style='color:#159a9c;'>●</span> &nbsp; BASES COMPLEMENTARES "
         "&nbsp; <b style='color:#34445a;'>IBGE / PEERS</b></div>",
         unsafe_allow_html=True,
     )
+
+default_level = 5.3 if 5.3 in available_levels else float(available_levels[0])
 
 controls, dimension = st.columns([1.2, 1])
 with controls:
@@ -422,21 +463,26 @@ with controls:
         with value:
             st.markdown(
                 "<div style='text-align:right;font-size:22px;font-weight:700;color:#159a9c;'>"
-                "5,3 <span style='font-size:11px;color:#71829b;font-weight:400;'>m</span></div>",
+                f"{format_level(st.session_state.get('nivel_guaiba', default_level))} "
+                "<span style='font-size:13px;color:#71829b;font-weight:400;'>m</span></div>",
                 unsafe_allow_html=True,
             )
         selected_level = st.slider(
             "Nível do rio (m)",
             min_value=float(available_levels[0]),
             max_value=float(available_levels[-1]),
-            value=5.3 if 5.3 in available_levels else float(available_levels[0]),
+            value=default_level,
             step=0.1,
+            key="nivel_guaiba",
             label_visibility="collapsed",
         )
-        st.caption(
-            f"{format_level(available_levels[0])} m"
-            f"　　Referência de maio/2024: 5,35 m"
-            f"　　{format_level(available_levels[-1])} m"
+        st.markdown(
+            "<div style='display:flex;justify-content:space-between;font-size:13px;"
+            "color:#586b82;margin-top:-8px;'>"
+            f"<span>{format_level(available_levels[0])} m</span>"
+            "<span>Referência de maio/2024: 5,35 m</span>"
+            f"<span>{format_level(available_levels[-1])} m</span></div>",
+            unsafe_allow_html=True,
         )
 
 with dimension:
