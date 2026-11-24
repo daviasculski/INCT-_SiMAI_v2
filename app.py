@@ -108,20 +108,34 @@ def make_exposure_chart(
         texttemplate=text_template,
         textposition="outside",
         cliponaxis=False,
+        textfont=dict(size=12, color=NAVY),
         hovertemplate="%{y}<br>" + metric["axis"] + ": %{x:,.1f}<extra></extra>",
     )
     figure.update_layout(
-        height=330,
+        template="plotly_white",
+        height=350,
         margin=dict(l=4, r=28, t=12, b=8),
-        xaxis_title=metric["axis"],
         yaxis_title=None,
         showlegend=False,
-        font=dict(color=NAVY, family="Arial, sans-serif", size=11),
+        font=dict(color=NAVY, family="Arial, sans-serif", size=13),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        xaxis=dict(showgrid=True, gridcolor="#edf1f6", zeroline=False),
-        yaxis=dict(showgrid=False, automargin=True),
-        title=dict(text=f"10 bairros com maior {selected_metric.lower()}", font=dict(size=14)),
+        xaxis=dict(
+            showgrid=True,
+            gridcolor="#dce4ee",
+            zeroline=False,
+            tickfont=dict(size=12, color=NAVY),
+            title=dict(text=metric["axis"], font=dict(size=12, color=NAVY)),
+        ),
+        yaxis=dict(
+            showgrid=False,
+            automargin=True,
+            tickfont=dict(size=12, color=NAVY),
+        ),
+        title=dict(
+            text=f"10 bairros com maior {selected_metric.lower()}",
+            font=dict(size=16, color=NAVY),
+        ),
     )
     if metric["format"] == "percent":
         figure.update_xaxes(ticksuffix="%")
@@ -166,24 +180,47 @@ def make_evolution_chart(
             y=by_level["affected_neighborhoods"],
             mode="lines",
             name="Bairros atingidos",
-            line=dict(color="#e69a36", width=2, dash="dot"),
+            line=dict(color="#b96b00", width=2, dash="dot"),
             hovertemplate="Nível %{x:.1f} m<br>%{y} bairros<extra></extra>",
         ),
         secondary_y=True,
     )
     figure.add_vline(x=current_level, line_dash="dash", line_color="#e66f62")
     figure.update_layout(
-        height=330,
+        template="plotly_white",
+        height=350,
         margin=dict(l=8, r=8, t=12, b=8),
-        legend=dict(orientation="h", y=1.15, x=0),
-        font=dict(color=NAVY, family="Arial, sans-serif", size=11),
+        legend=dict(
+            orientation="h",
+            y=1.15,
+            x=0,
+            font=dict(size=12, color=NAVY),
+        ),
+        font=dict(color=NAVY, family="Arial, sans-serif", size=13),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        title=dict(text=f"Evolução: {selected_metric.lower()} e bairros atingidos", font=dict(size=14)),
+        title=dict(
+            text=f"Evolução: {selected_metric.lower()} e bairros atingidos",
+            font=dict(size=16, color=NAVY),
+        ),
     )
-    figure.update_xaxes(title_text="Nível do Guaíba (m)", gridcolor="#edf1f6")
-    figure.update_yaxes(title_text=metric["axis"], secondary_y=False, gridcolor="#edf1f6")
-    figure.update_yaxes(title_text="Bairros", secondary_y=True, showgrid=False)
+    figure.update_xaxes(
+        title=dict(text="Nível do Guaíba (m)", font=dict(size=12, color=NAVY)),
+        gridcolor="#dce4ee",
+        tickfont=dict(size=12, color=NAVY),
+    )
+    figure.update_yaxes(
+        title=dict(text=metric["axis"], font=dict(size=12, color=NAVY)),
+        secondary_y=False,
+        gridcolor="#dce4ee",
+        tickfont=dict(size=12, color=NAVY),
+    )
+    figure.update_yaxes(
+        title=dict(text="Bairros", font=dict(size=12, color=NAVY)),
+        secondary_y=True,
+        showgrid=False,
+        tickfont=dict(size=12, color=NAVY),
+    )
     return figure
 
 
@@ -201,19 +238,30 @@ def make_occurrences_chart(occurrences: pd.DataFrame) -> go.Figure:
         texttemplate="%{x:.1f}%",
         textposition="outside",
         cliponaxis=False,
+        textfont=dict(size=12, color=NAVY),
         hovertemplate="%{y}<br>%{x:.1f}% dos domicílios<extra></extra>",
     )
     figure.update_layout(
-        height=310,
+        template="plotly_white",
+        height=340,
         margin=dict(l=4, r=30, t=12, b=8),
-        xaxis_title="Domicílios (%)",
         yaxis_title=None,
         showlegend=False,
-        font=dict(color=NAVY, family="Arial, sans-serif", size=10),
+        font=dict(color=NAVY, family="Arial, sans-serif", size=12),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        xaxis=dict(range=[0, 100], showgrid=True, gridcolor="#edf1f6"),
-        yaxis=dict(showgrid=False, automargin=True),
+        xaxis=dict(
+            range=[0, 100],
+            showgrid=True,
+            gridcolor="#dce4ee",
+            tickfont=dict(size=12, color=NAVY),
+            title=dict(text="Domicílios (%)", font=dict(size=12, color=NAVY)),
+        ),
+        yaxis=dict(
+            showgrid=False,
+            automargin=True,
+            tickfont=dict(size=12, color=NAVY),
+        ),
     )
     return figure
 
@@ -235,13 +283,15 @@ def make_quality_chart(quality_of_life: pd.DataFrame) -> go.Figure:
     figure.update_traces(
         textposition="outside",
         texttemplate="%{label}<br>%{percent:.1%}",
+        textfont=dict(size=12, color=NAVY),
         hovertemplate="%{label}: %{value:.1f}%<extra></extra>",
     )
     figure.update_layout(
-        height=310,
+        template="plotly_white",
+        height=340,
         margin=dict(l=8, r=8, t=12, b=8),
         showlegend=False,
-        font=dict(color=NAVY, family="Arial, sans-serif", size=10),
+        font=dict(color=NAVY, family="Arial, sans-serif", size=12),
         plot_bgcolor="white",
         paper_bgcolor="white",
     )
@@ -258,17 +308,57 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    [data-testid="stAppViewContainer"] { background: #f3f6fa; }
+    [data-testid="stAppViewContainer"] {
+        background: #f3f6fa;
+        color: #26364a !important;
+    }
     [data-testid="stSidebar"] { background: #172a40; }
     [data-testid="stSidebar"] * { color: #e7eef7; }
-    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p { color: #91a4bc; }
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
+        color: #b4c3d5 !important;
+        font-size: 12px;
+    }
+    [data-testid="stAppViewContainer"] h1,
+    [data-testid="stAppViewContainer"] h2,
+    [data-testid="stAppViewContainer"] h3 {
+        color: #1d2b40 !important;
+    }
+    [data-testid="stAppViewContainer"] h1 {
+        font-size: 2rem;
+        letter-spacing: -0.035em;
+    }
+    [data-testid="stAppViewContainer"] [data-testid="stMarkdownContainer"] p {
+        color: #34445a !important;
+        font-size: 15px;
+    }
+    [data-testid="stAppViewContainer"] [data-testid="stCaptionContainer"] {
+        color: #586b82 !important;
+        font-size: 13px !important;
+    }
+    [data-testid="stAppViewContainer"] label {
+        color: #34445a !important;
+        font-size: 14px !important;
+    }
+    [data-testid="stAppViewContainer"] [data-baseweb="select"] > div {
+        background: #ffffff !important;
+        border-color: #bdc9d8 !important;
+        color: #24354b !important;
+    }
+    [data-testid="stAppViewContainer"] [data-baseweb="select"] input {
+        color: #24354b !important;
+    }
+    [data-baseweb="popover"] {
+        background: #ffffff !important;
+    }
+    [data-baseweb="popover"] li[role="option"] {
+        color: #24354b !important;
+        font-size: 14px;
+    }
     .stMainBlockContainer { max-width: 1600px; padding-top: 1.6rem; padding-bottom: 1rem; }
     [data-testid="stVerticalBlockBorderWrapper"] {
         background: #ffffff; border: 1px solid #dce4ee; border-radius: 12px;
     }
     [data-testid="stVerticalBlockBorderWrapper"] > div { border-radius: 12px; }
-    h1 { color: #1d2b40; letter-spacing: -0.035em; }
-    h2, h3 { color: #24354b; }
     [data-testid="stMetricValue"] { color: #159a9c; }
     [data-testid="stSlider"] [role="slider"] { background: #159a9c; }
     footer { visibility: hidden; }
@@ -286,14 +376,14 @@ with st.sidebar:
         ÁG</div>
         <div style="font-size:14px;font-weight:700;margin-top:12px;letter-spacing:.04em;">
         MONITOR</div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:.18em;color:#91a4bc;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.18em;color:#b4c3d5;">
         ENCHENTES</div>
-        <div style="margin-top:34px;font-size:10px;font-weight:700;letter-spacing:.16em;
-        color:#91a4bc;">PAINEL</div>
+        <div style="margin-top:34px;font-size:11px;font-weight:700;letter-spacing:.16em;
+        color:#b4c3d5;">PAINEL</div>
         <div style="margin-top:12px;padding:12px;border-radius:8px;background:#21405b;
         border-left:3px solid #20bdba;font-size:13px;font-weight:600;">
         ◉ &nbsp; Contexto externo</div>
-        <div style="position:fixed;bottom:30px;font-size:10px;line-height:1.9;color:#91a4bc;">
+        <div style="position:fixed;bottom:30px;font-size:11px;line-height:1.9;color:#b4c3d5;">
         <b style="letter-spacing:.15em;">PROJETO</b><br>Projeto Extensionista<br>
         Fase 2 · Porto Alegre</div>
         """,
@@ -305,7 +395,7 @@ available_levels = sorted(simulation["level_m"].unique())
 
 st.markdown(
     """
-    <div style="font-size:10px;letter-spacing:.16em;font-weight:700;color:#8294ad;">
+    <div style="font-size:12px;letter-spacing:.16em;font-weight:700;color:#60728a;">
     IMPACTOS SOCIAIS E INFRAESTRUTURA</div>
     """,
     unsafe_allow_html=True,
@@ -316,7 +406,7 @@ with heading:
     st.caption("Enchentes de maio de 2024 · Região de Porto Alegre")
 with source:
     st.markdown(
-        "<div style='text-align:right;padding-top:20px;font-size:10px;color:#71829b;'>"
+        "<div style='text-align:right;padding-top:20px;font-size:12px;color:#586b82;'>"
         "<span style='color:#159a9c;'>●</span> &nbsp; BASES COMPLEMENTARES "
         "&nbsp; <b style='color:#34445a;'>IBGE / PEERS</b></div>",
         unsafe_allow_html=True,
@@ -411,16 +501,16 @@ st.markdown(
     <div style="background:#eaf0f6;border:1px dashed #c5d1df;border-radius:10px;
     padding:14px 18px;display:flex;justify-content:space-between;align-items:center;
     color:#34445a;">
-      <div><div style="font-size:10px;letter-spacing:.14em;font-weight:700;color:#8294ad;">
+      <div><div style="font-size:12px;letter-spacing:.14em;font-weight:700;color:#60728a;">
       COBERTURA DA SIMULAÇÃO</div>
       <div style="font-weight:600;margin-top:4px;">Registros disponíveis na base INCT</div>
-      <div style="font-size:11px;color:#71829b;margin-top:3px;">
+      <div style="font-size:13px;color:#586b82;margin-top:3px;">
       Linhas processadas para {simulation["level_m"].nunique()} níveis do rio e
       {simulation["neighborhood"].nunique()} bairros de Porto Alegre.</div></div>
       <div style="background:#fff;border:1px solid #dce4ee;border-radius:8px;
       padding:8px 18px;text-align:center;color:#159a9c;font-size:18px;font-weight:700;">
       {format_number(record_count)}
-      <div style="font-size:9px;letter-spacing:.12em;color:#8294ad;">REGISTROS</div></div>
+      <div style="font-size:11px;letter-spacing:.12em;color:#586b82;">REGISTROS</div></div>
     </div>
     """,
     unsafe_allow_html=True,
