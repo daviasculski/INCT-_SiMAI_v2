@@ -21,3 +21,15 @@ Comandos Linux/Mac:
 Instalar bibliotecas necessárias:
 
 `pip install -r requirements.txt`
+
+## Dashboard
+
+Para executar o dashboard localmente após instalar as dependências:
+
+```powershell
+streamlit run app.py
+```
+
+O painel **Análise Contextual e Externa** combina a simulação de alagamentos do
+INCT SIMAI com as tabelas 22.4 e 22.6 da pesquisa PEERS/IBGE. Use o controle
+de nível do Guaíba e o seletor de dimensão para explorar os gráficos.
