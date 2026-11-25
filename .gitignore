@@ -2,3 +2,4 @@
 .venv-1
 dados/originais/peers
 dados/processados/peers_longo.csv
+dashboards/__pycache__
